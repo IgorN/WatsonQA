@@ -1,0 +1,61 @@
+{% extends "BabylonHealthBundle:Templates:main.html.twig" %}
+
+{% block content %}
+    <h1 style="font-weight:bold;font-size: larger;">Hello, Watson!</h1><br />
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+        <input type="submit" value="Ask" />
+    {{ form_end(form) }}
+    <br />
+    {% if answers %}
+        <h2 style="font-weight:bold;font-size: large;">Answers and Confidence</h2>
+        <br />
+        <ul>
+            {% for answer in answers %}
+                <li>
+                    <p>{{ answer.text }}</p>
+                    <label style="font-weight: bold;font-size: smaller">Confidence:{{ answer.confidencePercent }}%</label>
+                    <select data-id="{{ answer.id }}"
+                            data-question-id="{{ answer.questionId}}"
+                            data-text="{{ answer.text }}"
+                            data-question-text="{{ answer.questionText }}"
+                            >
+                        <option>Vote</option>
+                        {% for key, value in voteList %}
+                            <option value="{{ value }}">{{ key }}</option>
+                        {% endfor %}
+                    </select>
+                    <br /><br />
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        $(function() {
+            $("select").change(function () {
+                var answer = {
+                    "id": $(this).data('id'),
+                    "questionId": $(this).data('questionId'),
+                    "text": $(this).data('text'),
+                    "questionText": $(this).data('questionText'),
+                    "vote": $(this).val()
+                };
+                $.ajax({
+                    method: "POST",
+                    url: "{{ url('watson_demo_feedback') }}",
+                    data: {"answer": answer}
+                })
+                        .done(function (msg) {
+                            alert("Status: " + msg.status + "\n"
+                                    + "Msg: " + msg.msg);
+                        });
+            });
+        });
+    </script>
+{% endblock %}

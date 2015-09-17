@@ -1,0 +1,11 @@
+watson_demo_index:
+    pattern: /watson
+    defaults: { _controller: BabylonWatsonBundle:Demo:index }
+
+watson_demo_debug:
+    pattern: /watson/debug
+    defaults: { _controller: BabylonWatsonBundle:Demo:debug }
+
+watson_demo_feedback:
+    pattern: /watson/feedback
+    defaults: { _controller: BabylonWatsonBundle:Demo:feedback }

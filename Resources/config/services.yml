@@ -1,0 +1,13 @@
+services:
+    babylon_watson.model.watson_question:
+        class: Babylon\WatsonBundle\Model\WatsonQuestion
+        arguments: [%watson.url%, %watson.username%, %watson.password%]
+    babylon_watson.service.watson_connector:
+        class: Babylon\WatsonBundle\Service\WatsonConnector
+    babylon_watson.handler.question_response_handler:
+        class: Babylon\WatsonBundle\Handler\QuestionResponseHandler
+    babylon_watson.service.watson_question:
+        class: Babylon\WatsonBundle\Service\WatsonQuestion
+        arguments: [@babylon_watson.service.watson_connector, @babylon_watson.model.watson_question]
+        calls:
+            - [ setQuestionResponseHandler, [@babylon_watson.handler.question_response_handler]]

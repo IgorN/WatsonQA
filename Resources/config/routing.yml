@@ -1,0 +1,2 @@
+babylon_watson_demo:
+    resource: "@BabylonWatsonBundle/Resources/config/routing/demo.yml"
